@@ -11,6 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
+.neon
+.vercel
+playwright-report
+test-results
+.test-postgres
 
 # Editor directories and files
 .vscode/*
