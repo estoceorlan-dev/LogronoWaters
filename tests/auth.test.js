@@ -49,6 +49,7 @@ before(async () => {
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   base = `http://127.0.0.1:${server.address().port}`;
   process.env.NEON_AUTH_BASE_URL = `${base}/auth`;
+  process.env.NEON_AUTH_JWKS_URL = `${base}/auth/.well-known/jwks.json`;
   process.env.ADMIN_EMAILS = "owner@example.com";
 });
 after(async () => {

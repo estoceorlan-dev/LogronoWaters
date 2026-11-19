@@ -1,5 +1,23 @@
 import { test, expect } from "@playwright/test";
 
+test("unverified sign-in opens the email-code form after a normalized SDK error", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByLabel("Email address").fill("unverified@example.com");
+  await page.getByLabel("Password", { exact: true }).fill("test-password");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Verify your email", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByLabel("Verification code for unverified@example.com"),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Resend verification code" }),
+  ).toBeVisible();
+});
+
 async function login(page) {
   await page.goto("/");
   await page.getByLabel("Email address").fill("owner@example.com");

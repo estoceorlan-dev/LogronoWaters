@@ -1,0 +1,11 @@
+.git
+node_modules
+dist
+dist-ssr
+.env
+.env.*
+*.local
+.neon
+.test-postgres
+test-results
+playwright-report

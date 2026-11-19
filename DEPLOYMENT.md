@@ -25,7 +25,7 @@ Configure email/password sign-in, **require email verification at signup**, and 
 - The final Vercel production URL and custom domain, if used.
 - Each preview URL that needs login, on its corresponding preview branch.
 
-Copy the exact Auth Base URL, including its database/Auth path, to both `NEON_AUTH_BASE_URL` and `VITE_NEON_AUTH_URL`. Copy the JWKS URL to `NEON_AUTH_JWKS_URL`; it normally ends with `/auth/.well-known/jwks.json`. All three must belong to the same branch. The API verifies EdDSA signatures plus the Auth origin as both issuer and audience.
+Copy the exact Auth Base URL, including its database/Auth path, to `NEON_AUTH_BASE_URL`. Vite uses that public URL automatically when `VITE_NEON_AUTH_URL` is unset, including after `neon deploy` pulls the branch environment. An explicit `VITE_NEON_AUTH_URL` overrides it and must point to the same branch. Copy the JWKS URL to `NEON_AUTH_JWKS_URL`; it normally ends with `/auth/.well-known/jwks.json`. The API verifies EdDSA signatures plus the Auth origin as both issuer and audience.
 
 No Better Auth database migrations are needed: Neon manages its own `neon_auth` schema. The app migration creates only station tables.
 
@@ -39,13 +39,13 @@ Copy `.env.example` to an ignored `.env.local` for local setup. Use actual value
 | `DATABASE_URL_UNPOOLED` | Migration environment        | Direct URL; not needed by the deployed app                     |
 | `NEON_AUTH_BASE_URL`    | Vercel runtime; local API    | Exact branch Auth URL including its path                       |
 | `NEON_AUTH_JWKS_URL`    | Vercel runtime; local API    | Branch JWKS endpoint (optional if it follows the default path) |
-| `VITE_NEON_AUTH_URL`    | Vercel build; local frontend | Public Auth URL; must match the server                         |
+| `VITE_NEON_AUTH_URL`    | Optional build-time override | Public Auth URL; defaults to `NEON_AUTH_BASE_URL`              |
 | `ADMIN_EMAILS`          | Vercel runtime; local API    | Comma-separated verified owner/admin emails                    |
 | `STAFF_EMAILS`          | Vercel runtime; local API    | Comma-separated verified staff emails; may be empty            |
 
 Only the public Auth URL uses a `VITE_` prefix. Database URLs, passwords, and access lists must never have that prefix or be committed. An empty admin/staff list grants no access. Any verified Auth user may exist, but only the explicitly listed accounts can read or change station data. Administrators control settings, supplier changes, inventory thresholds, customer archival/restoration, and reversing paid status. Staff can record customers, orders, payments, inventory movements, production, and maintenance.
 
-Redeploy after changing Vercel environment variables. `VITE_NEON_AUTH_URL` is embedded at build time, so it always requires a rebuild. Removing a staff email takes effect on the next request after the updated runtime is deployed. Sign-out clears the Auth session; already-issued JWTs can remain valid until their short expiration.
+Redeploy after changing Vercel environment variables. The frontend's public Auth URL is embedded at build time, so changing either its explicit override or fallback requires a rebuild. Removing a staff email takes effect on the next request after the updated runtime is deployed. Sign-out clears the Auth session; already-issued JWTs can remain valid until their short expiration.
 
 ## 4. Apply the schema
 
@@ -99,6 +99,10 @@ GitHub Actions also runs these checks on pull requests and pushes to `main`/`mas
 9. Confirm the app's production env values use the production branch, and preview deployments use the preview branch.
 
 Complete these live checks after credentials, domains, and SMTP are configured. Local tests and frontend builds do not verify production service configuration.
+
+For an opt-in local check against the linked Neon branch, start `npm run dev` and run `npm run verify:neon` in another terminal. This creates the first account in `ADMIN_EMAILS` through the app, waits for its real email verification code, then checks sign-in, session restoration, authenticated data pages, and sign-out. Use it only for an administrator account you intend to create. It does not change an existing account's password or skip email verification.
+
+The verifier stores its generated password in the Git-ignored `.neon-verification.local` file. When prompted, add the received code as an `otp` field in that file, preserving the other fields. After verification, use the app's password-reset flow to choose your own password and remove the local verification file when it is no longer needed. Never commit this file or share its password.
 
 ## Operations and recovery
 

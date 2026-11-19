@@ -32,11 +32,12 @@ const token = await new SignJWT(user)
   .setExpirationTime("1h")
   .sign(privateKey);
 process.env.NEON_AUTH_BASE_URL = `${origin}/auth`;
+process.env.NEON_AUTH_JWKS_URL = `${origin}/auth/.well-known/jwks.json`;
 process.env.ADMIN_EMAILS = user.email;
 process.env.VITE_NEON_AUTH_URL = `${origin}/auth`;
 const auth = http.createServer(async (req, res) => {
   const requestOrigin = req.headers.origin;
-  if (requestOrigin === "http://127.0.0.1:5173") {
+  if (requestOrigin === "http://127.0.0.1:5174") {
     res.setHeader("Access-Control-Allow-Origin", requestOrigin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader(
@@ -88,6 +89,19 @@ const auth = http.createServer(async (req, res) => {
     let text = "";
     for await (const chunk of req) text += chunk;
     const body = JSON.parse(text);
+    if (
+      body.email === "unverified@example.com" &&
+      body.password === "test-password"
+    ) {
+      res.writeHead(403);
+      res.end(
+        JSON.stringify({
+          code: "EMAIL_NOT_VERIFIED",
+          message: "Email not verified",
+        }),
+      );
+      return;
+    }
     if (body.password !== "test-password") {
       res.writeHead(401);
       res.end(
@@ -115,12 +129,17 @@ const auth = http.createServer(async (req, res) => {
 });
 const backend = createApiServer(createHandler({ database: () => fixture.db }));
 await new Promise((resolve) => auth.listen(3002, "127.0.0.1", resolve));
-await new Promise((resolve) => backend.listen(3001, "127.0.0.1", resolve));
+await new Promise((resolve) => backend.listen(3003, "127.0.0.1", resolve));
 const vite = await createServer({
-  server: { host: "127.0.0.1", port: 5173, strictPort: true },
+  server: {
+    host: "127.0.0.1",
+    port: 5174,
+    strictPort: true,
+    proxy: { "/api": "http://127.0.0.1:3003" },
+  },
 });
 await vite.listen();
-console.log("E2E station ready at http://127.0.0.1:5173");
+console.log("E2E station ready at http://127.0.0.1:5174");
 let stopping = false;
 const stop = async () => {
   if (stopping) return;

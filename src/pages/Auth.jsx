@@ -15,7 +15,7 @@ export default function Auth({ onAuthenticated }) {
           <Droplets className="text-blue-600 mb-4" size={36} />
           <h1 className="text-2xl font-bold">Connect your station</h1>
           <p className="mt-3 text-slate-500">
-            Set VITE_NEON_AUTH_URL in your environment and restart the app.
+            Configure your station's Neon Auth connection and restart the app.
             Follow the deployment guide in the repository to connect Neon Auth
             and Postgres.
           </p>
@@ -103,17 +103,29 @@ export default function Auth({ onAuthenticated }) {
               return;
             }
             setEmail(d.email);
-            result =
-              view === "signup"
-                ? await authClient.signUp.email(d)
-                : await authClient.signIn.email(d);
-            if (result.error) {
-              if (result.error.code === "EMAIL_NOT_VERIFIED") {
+            let authError;
+            try {
+              result =
+                view === "signup"
+                  ? await authClient.signUp.email(d)
+                  : await authClient.signIn.email(d);
+              authError = result.error;
+            } catch (error) {
+              authError = error;
+            }
+            if (authError) {
+              // Neon can throw a normalized SDK error or return a raw API error.
+              const codes = [authError.code, authError.error?.code];
+              if (
+                codes.some((code) =>
+                  ["EMAIL_NOT_VERIFIED", "email_not_confirmed"].includes(code),
+                )
+              ) {
                 setView("verify");
                 setNotice("Verify your email using the code sent by Neon.");
                 return;
               }
-              throw new Error(result.error.message || "Could not sign in.");
+              throw new Error(authError.message || "Could not sign in.");
             }
             const session = await authClient.getSession();
             if (session.error) throw new Error(session.error.message);

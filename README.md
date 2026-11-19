@@ -72,7 +72,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The checks run without production credentials. Database tests use disposable PGlite by default; a dedicated `TEST_DATABASE_URL` enables native Postgres testing. Browser tests use a local identity fixture, so production email delivery and Neon Auth configuration require separate deployment verification.
+The checks run without production credentials. Database tests use disposable PGlite by default; a dedicated `TEST_DATABASE_URL` enables native Postgres testing. Browser tests use a local identity fixture. The opt-in `npm run verify:neon` command checks real Neon signup and sign-in against a running local app; it requires the verification code from the administrator's inbox. See the [deployment guide](DEPLOYMENT.md#6-verify-the-deployed-app) before running it.
 
 ## Documentation
 
