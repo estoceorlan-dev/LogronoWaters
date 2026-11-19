@@ -69,7 +69,7 @@ export default function Orders() {
             try {
               exportFile(
                 await api(`orders/export?${query}`, { download: true }),
-                "aquaflow-orders.csv",
+                "logronowaters-orders.csv",
               );
             } catch (err) {
               setError(err.message);

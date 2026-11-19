@@ -1,6 +1,6 @@
 # Architecture
 
-Logrono Waters uses the AquaFlow interface to manage one water refilling station. The system consists of a React single-page application, an authenticated Node.js API, Neon Postgres, and managed Neon Auth.
+LogronoWaters manages one water refilling station. The system consists of a React single-page application, an authenticated Node.js API, Neon Postgres, and managed Neon Auth.
 
 ## System overview
 

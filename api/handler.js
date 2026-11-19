@@ -45,7 +45,7 @@ export function createHandler({
         res.setHeader("Content-Type", "text/csv; charset=utf-8");
         res.setHeader(
           "Content-Disposition",
-          'attachment; filename="aquaflow-orders.csv"',
+          'attachment; filename="logronowaters-orders.csv"',
         );
         return res.status(200).send(`\uFEFF${result.csv}`);
       }

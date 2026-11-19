@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Logrono Waters is a station management application for staff handling water refills, pickup orders, deliveries, customer records, and container inventory. Its AquaFlow dashboard brings those workflows into one operational view.
+LogronoWaters is a station management application for staff handling water refills, pickup orders, deliveries, customer records, and container inventory. Its dashboard brings those workflows into one operational view.
 
 The application connects three records that must agree during daily operations: what customers ordered, which containers remain available, and which completed orders have been paid.
 

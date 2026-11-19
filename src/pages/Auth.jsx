@@ -28,7 +28,7 @@ export default function Auth({ onAuthenticated }) {
         <div className="flex gap-3 items-center mb-7">
           <Droplets className="text-blue-600" size={36} />
           <div>
-            <h1 className="text-2xl font-bold">AquaFlow</h1>
+            <h1 className="text-2xl font-bold">LogronoWaters</h1>
             <p className="text-sm text-slate-500">
               Water refilling station management
             </p>

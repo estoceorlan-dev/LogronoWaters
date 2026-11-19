@@ -82,16 +82,16 @@ test("sign-in, customer, stock, order, payment, settings and reload work togethe
   ).toBeVisible();
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Export CSV" }).click();
-  expect((await download).suggestedFilename()).toBe("aquaflow-orders.csv");
+  expect((await download).suggestedFilename()).toBe("logronowaters-orders.csv");
   await page.getByRole("link", { name: "Dashboard", exact: true }).click();
   await expect(page.getByText("₱90.00", { exact: true }).first()).toBeVisible();
   await page.getByRole("link", { name: "Settings", exact: true }).click();
-  await page.getByLabel("Station name").fill("AquaFlow Test Station");
+  await page.getByLabel("Station name").fill("LogronoWaters Test Station");
   await page.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(page.getByText("Station settings saved.")).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Station name")).toHaveValue(
-    "AquaFlow Test Station",
+    "LogronoWaters Test Station",
   );
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
   await expect(

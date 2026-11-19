@@ -1,6 +1,6 @@
-# Deployment · Logrono Waters
+# Deployment · LogronoWaters
 
-Vercel hosts the AquaFlow frontend and its authenticated API. Neon provides Postgres and managed Auth. This guide covers environment configuration, schema setup, publishing, and operations. For system design, see [Architecture](ARCHITECTURE.md); for business workflows, see [Project details](PROJECT.md).
+Vercel hosts the LogronoWaters frontend and its authenticated API. Neon provides Postgres and managed Auth. This guide covers environment configuration, schema setup, publishing, and operations. For system design, see [Architecture](ARCHITECTURE.md); for business workflows, see [Project details](PROJECT.md).
 
 ## Production deployment
 
@@ -16,7 +16,7 @@ Pushes to `main` trigger Vercel deployments. Production environment variables ar
 
 ## 1. Create or select the Neon project
 
-Use the intended Logrono Waters project in your Neon account. If there is none, create an AWS project, preferably Singapore (`aws-ap-southeast-1`) to match the API's `sin1` region in `vercel.json`. Do not reuse a database belonging to another app. Every new project includes Postgres.
+Use the intended LogronoWaters project in your Neon account. If there is none, create an AWS project, preferably Singapore (`aws-ap-southeast-1`) to match the API's `sin1` region in `vercel.json`. Do not reuse a database belonging to another app. Every new project includes Postgres.
 
 Use separate development/preview and production branches. When changing an existing production schema, first apply and test migrations on a child branch. Keep preview deployments pointed to their own branch, including their own Auth URLs and staff access settings.
 
