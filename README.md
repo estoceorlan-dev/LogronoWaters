@@ -7,6 +7,8 @@
 ![Node.js 22](https://img.shields.io/badge/Node.js-22-417E38?logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white)
 
+[Live app](https://logrono-waters.vercel.app) · [Architecture](ARCHITECTURE.md) · [Deployment guide](DEPLOYMENT.md)
+
 A full-stack operations dashboard for a water refilling station, bringing customer records, pickup and delivery orders, container inventory, and daily sales into one workspace.
 
 The project addresses a practical operational problem: keeping order fulfillment, available stock, and collected payments consistent as staff record deliveries, refill containers, and serve customers.
@@ -80,4 +82,4 @@ The checks run without production credentials. Database tests use disposable PGl
 - [Project details](PROJECT.md) — operational workflows, permissions, business rules, and scope.
 - [Deployment](DEPLOYMENT.md) — Vercel and Neon setup, environment variables, migrations, and operations.
 
-The repository contains the application and deployment configuration. A live production deployment is not documented yet. The app supports one station per deployment and records payments and refunds handled outside the system.
+The [live application](https://logrono-waters.vercel.app) requires an approved, verified staff account. The app supports one station per deployment and records payments and refunds handled outside the system.

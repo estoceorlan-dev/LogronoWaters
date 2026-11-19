@@ -2,6 +2,18 @@
 
 Vercel hosts the AquaFlow frontend and its authenticated API. Neon provides Postgres and managed Auth. This guide covers environment configuration, schema setup, publishing, and operations. For system design, see [Architecture](ARCHITECTURE.md); for business workflows, see [Project details](PROJECT.md).
 
+## Production deployment
+
+| Setting                 | Current deployment                                             |
+| ----------------------- | -------------------------------------------------------------- |
+| Application             | [logrono-waters.vercel.app](https://logrono-waters.vercel.app) |
+| Vercel project          | `logrono-waters`                                               |
+| Source                  | `estoceorlan-dev/LogronoWaters`, branch `main`                 |
+| Runtime and API region  | Node.js 22, Singapore (`sin1`)                                 |
+| Neon project and branch | `logrono-waters`, branch `production`                          |
+
+Pushes to `main` trigger Vercel deployments. Production environment variables are stored in Vercel, and the application origin is registered in the production branch's Neon Auth trusted domains. Local credentials, verification passwords, and database files are excluded from Git and CLI deployment uploads.
+
 ## 1. Create or select the Neon project
 
 Use the intended Logrono Waters project in your Neon account. If there is none, create an AWS project, preferably Singapore (`aws-ap-southeast-1`) to match the API's `sin1` region in `vercel.json`. Do not reuse a database belonging to another app. Every new project includes Postgres.
